@@ -1,0 +1,6 @@
+.gradle
+.idea
+.swagger-codegen
+.swagger-codegen-ignore
+build
+pom.xml
