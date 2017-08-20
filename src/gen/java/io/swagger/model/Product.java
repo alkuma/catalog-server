@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 
 
@@ -83,6 +86,11 @@ public class Product   {
     sb.append("    productType: ").append(toIndentedString(productType)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  public String toJson() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.writeValueAsString(this);
   }
 
   /**

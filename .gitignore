@@ -2,5 +2,6 @@
 .idea
 .swagger-codegen
 .swagger-codegen-ignore
+bin
 build
 pom.xml

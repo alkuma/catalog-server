@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 
 
@@ -25,6 +28,11 @@ public class ErrorModel   {
   }
   public void setCode(Integer code) {
     this.code = code;
+  }
+
+  public ErrorModel(Integer code, String message) {
+    this.code = code;
+    this.message = message;
   }
 
   /**
@@ -68,6 +76,15 @@ public class ErrorModel   {
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  public String toJson() {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      return "{ "+ "\"message\" : \"" + message + "\" }";
+    }
   }
 
   /**
