@@ -27,7 +27,7 @@ public class TestCatalogApi {
 
         dispatcher.invoke(request, response);
 
-        Assert.assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_OK);
     }
 
     @Test()
@@ -42,9 +42,23 @@ public class TestCatalogApi {
 
         dispatcher.invoke(request, response);
 
-        Assert.assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_NOT_FOUND);
     }
 
+    @Test()
+    public void testGetProducts() throws URISyntaxException {
+        Dispatcher dispatcher = MockDispatcherFactory.createDispatcher();
+
+        POJOResourceFactory noDefaults = new POJOResourceFactory(ProductsApi.class);
+        dispatcher.getRegistry().addResourceFactory(noDefaults);
+
+        MockHttpRequest request = MockHttpRequest.get("/products?product_type=b,mycat&limit=3");
+        MockHttpResponse response = new MockHttpResponse();
+
+        dispatcher.invoke(request, response);
+
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_OK);
+    }
     @Test()
     public void testAddProduct() throws URISyntaxException, JsonProcessingException {
         Dispatcher dispatcher = MockDispatcherFactory.createDispatcher();
@@ -68,7 +82,7 @@ public class TestCatalogApi {
         dispatcher.invoke(request, response);
         System.out.println(response.getContentAsString());
 
-        Assert.assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_OK);
     }
 
     @Test()
@@ -88,6 +102,6 @@ public class TestCatalogApi {
 
         dispatcher.invoke(request, response);
 
-        Assert.assertEquals(HttpServletResponse.SC_NO_CONTENT, response.getStatus());
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_NO_CONTENT);
     }
 }

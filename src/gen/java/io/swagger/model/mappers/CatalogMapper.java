@@ -1,13 +1,14 @@
 package io.swagger.model.mappers;
 import io.swagger.model.Product;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
 public interface CatalogMapper {
-    public void createDatastoreObjectsIfAbsent();
-    public Product getProductById(Long id);
-    public List<Product> getProducts(Product crit);
-    public Long getNextProductId();
-    public void insertProduct(Product product);
-    public void deleteProduct(Long id);
+    void createDatastoreObjectsIfAbsent();
+    Product getProductById(Long id);
+    List<Product> getProducts(List<String> productTypes, RowBounds rowBounds);
+    Long getNextProductId();
+    void insertProduct(Product product);
+    void deleteProduct(Long id);
 }

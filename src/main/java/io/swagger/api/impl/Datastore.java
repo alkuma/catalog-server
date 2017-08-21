@@ -18,7 +18,8 @@ public class Datastore
 
     static
     {
-        Reader reader = null;
+        org.apache.ibatis.logging.LogFactory.useLog4JLogging();
+        Reader reader;
         try {
             reader = Resources.getResourceAsReader("mybatis-config.xml");
         } catch (IOException e) {

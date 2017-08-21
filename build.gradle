@@ -19,6 +19,7 @@ dependencies {
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.1'
     compile 'org.jboss.resteasy:resteasy-jackson2-provider:3.0.11.Final'
     compile 'org.mybatis:mybatis:3.4.5'
+    compile 'log4j:log4j:1.2.17'
 
     runtime 'org.postgresql:postgresql:42.1.4'
 
@@ -39,7 +40,7 @@ sourceSets {
 
 war {
     from ('src/main/resources') {
-        include 'jdbc.properties'
+        include '*.properties'
         into 'WEB-INF/classes'
     }
 }

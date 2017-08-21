@@ -11,6 +11,10 @@
             name VARCHAR(4000),
             product_type VARCHAR(4000)
         );
+
+        CREATE INDEX IF NOT EXISTS product_product_type_idx
+        ON product (product_type);
+
         CREATE SEQUENCE IF NOT EXISTS product_id_seq
         MINVALUE 1
         MAXVALUE 2147483647;
@@ -24,19 +28,16 @@
         WHERE id = #{Long}
     </select>
 
-    <select id='getProducts' resultType='io.swagger.model.Product'>
+    <select id='getProducts' parameterType="java.util.List" resultType='io.swagger.model.Product'>
         SELECT id AS id,
         name AS name,
         product_type AS productType
         from product
-        WHERE
-        (
-            (( #{id} IS NULL AND 1 = 1) OR id = #{id})
-            AND
-            (( #{name} is NULL AND 1=1) OR name = #{name})
-            AND
-            (( #{productType} is NULL AND 1=1) OR product_type = #{productType})
-        )
+        WHERE product_type IN
+        <foreach item="item" collection="list" index="index"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id='getNextProductId' resultType='Long'>
