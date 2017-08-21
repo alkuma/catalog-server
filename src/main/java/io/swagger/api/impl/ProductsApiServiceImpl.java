@@ -9,13 +9,16 @@ import io.swagger.model.ErrorModel;
 import io.swagger.model.NewProduct;
 import io.swagger.model.Product;
 
+import java.sql.SQLException;
 import java.util.List;
 import io.swagger.api.NotFoundException;
 import io.swagger.model.mappers.CatalogMapper;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 
 import java.io.InputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
@@ -34,8 +37,12 @@ public class ProductsApiServiceImpl extends ProductsApiService {
               mapper.insertProduct(p);
               session.commit();
               return Response.ok().entity(p.toJson()).build();
-          } catch (JsonProcessingException e) {
-              return Response.serverError().entity(new ErrorModel(500, e.getMessage()).toJson()).build();
+          }
+          catch (JsonProcessingException e) {
+              return Response.serverError().entity(new ErrorModel(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage()).toJson()).build();
+          } catch (PersistenceException e) {
+              return Response.status(HttpServletResponse.SC_CONFLICT).entity(new ErrorModel(HttpServletResponse.SC_CONFLICT, e.getMessage()).toJson()).build();
+
           }
       }
       @Override
@@ -45,7 +52,7 @@ public class ProductsApiServiceImpl extends ProductsApiService {
               CatalogMapper mapper = session.getMapper(CatalogMapper.class);
               mapper.deleteProduct(id);
               session.commit();
-              return Response.ok().build();
+              return Response.status(HttpServletResponse.SC_NO_CONTENT).build();
           }
       }
       @Override
@@ -55,11 +62,11 @@ public class ProductsApiServiceImpl extends ProductsApiService {
               CatalogMapper mapper = session.getMapper(CatalogMapper.class);
               Product p = mapper.getProductById(id);
               if(null == p) {
-                  return Response.status(404).entity(new ErrorModel(404, "Not found").toJson()).build();
+                  return Response.status(HttpServletResponse.SC_NOT_FOUND).entity(new ErrorModel(HttpServletResponse.SC_NOT_FOUND, "Not found").toJson()).build();
               }
               return Response.ok().entity(p.toJson()).build();
           } catch (JsonProcessingException e) {
-              return Response.serverError().entity(new ErrorModel(500, e.getMessage()).toJson()).build();
+              return Response.serverError().entity(new ErrorModel(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage()).toJson()).build();
           }
       }
       @Override
