@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='io.swagger.model.mappers.CatalogMapper'>
+
+    <insert id='createDatastoreObjectsIfAbsent'>
+        CREATE TABLE IF NOT EXISTS product
+        (
+            id INTEGER PRIMARY KEY,
+            name VARCHAR(4000),
+            product_type VARCHAR(4000)
+        );
+        CREATE SEQUENCE IF NOT EXISTS product_id_seq
+        MINVALUE 1
+        MAXVALUE 2147483647;
+    </insert>
+
+    <select id='getProductById' parameterType='Long' resultType='io.swagger.model.Product'>
+        SELECT id AS id,
+        name AS name,
+        product_type AS productType
+        FROM product
+        WHERE id = #{Long}
+    </select>
+
+    <select id='getProducts' resultType='io.swagger.model.Product'>
+        SELECT id AS id,
+        name AS name,
+        product_type AS productType
+        from product
+        WHERE
+        (
+            (( #{id} IS NULL AND 1 = 1) OR id = #{id})
+            AND
+            (( #{name} is NULL AND 1=1) OR name = #{name})
+            AND
+            (( #{productType} is NULL AND 1=1) OR product_type = #{productType})
+        )
+    </select>
+
+    <select id='getNextProductId' resultType='Long'>
+        SELECT nextval('product_id_seq')
+    </select>
+
+    <insert id='insertProduct' parameterType='io.swagger.model.Product'>
+        INSERT INTO product
+        (
+            id,
+            name,
+            product_type
+        )
+        VALUES
+        (
+            #{id},
+            #{name},
+            #{productType}
+        )
+    </insert>
+
+    <delete id='deleteProduct' parameterType='Long'>
+        DELETE FROM product
+        WHERE id = #{Long}
+    </delete>
+
+</mapper>

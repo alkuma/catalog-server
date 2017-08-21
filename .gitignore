@@ -2,6 +2,7 @@
 .idea
 .swagger-codegen
 .swagger-codegen-ignore
+*.iml
 bin
 build
 pom.xml
