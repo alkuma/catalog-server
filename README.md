@@ -55,9 +55,9 @@ but that can be changed by tweaking config scripts.
 ### Tools needed to deploy
 1. a browser  or any http client for making GET, POST and DELETE calls
 1. a running deployment (see above).
-localhost:8080 the get product api will be
 
 ### How to perform the tests
-2. The endpoint will be prefixed with api, eg if tomcat is running at
+The endpoint will be prefixed with api, eg if tomcat is running at
 localhost:8080, the api url will be
 http://localhost:8080/catalog/api/products/<id>
+Refer to the api documentation above to run the tests on the running system.
