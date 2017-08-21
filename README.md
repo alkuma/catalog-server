@@ -44,12 +44,8 @@ Unzip the generated war into this folder
 3. jar xf swagger-jaxrs-resteasy-server-1.0.0.war
 4. rm swagger-jaxrs-resteasy-server-1.0.0.war
 5. in /path/to/tomcat/webapps/catalog/WEB-INF/classes, there is a file called
-jdbc.properties. Populate the correct values of 
-postgres hostname
-postgres port
-postgres database name
-postgres user id
-postgres password
+jdbc.properties. Populate the correct values of postgres hostname, postgres
+port, postgres database name, postgres user id, postgres password.
 6. now you can start / stop tomcat using /path/to/tomcat/bin/shutdown.sh and
 /path/to/tomcat/bin/startup.sh By default tomcat will start on localhost:8080
 but that can be changed by tweaking config scripts.
@@ -63,4 +59,5 @@ localhost:8080 the get product api will be
 
 ### How to perform the tests
 2. The endpoint will be prefixed with api, eg if tomcat is running at
-http://localhost:8080/catalog/api/products/1
+localhost:8080, the api url will be
+http://localhost:8080/catalog/api/products/<id>
